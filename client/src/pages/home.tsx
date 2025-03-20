@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PanoramaViewer } from "@/components/panorama-viewer";
 import { NavigationControls } from "@/components/navigation-controls";
-import { LocationMarker } from "@/components/location-marker";
 import { BuildingInfo } from "@/components/building-info";
 import { LocationMenu } from "@/components/location-menu";
 import { DirectionArrow } from "@/components/direction-arrow";
@@ -13,11 +12,11 @@ export default function Home() {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const queryClient = useQueryClient();
 
-  const { data: locations = [] } = useQuery({
+  const { data: locations = [] } = useQuery<Location[]>({
     queryKey: ["/api/locations"],
   });
 
-  const { data: navigationPoints = [] } = useQuery({
+  const { data: navigationPoints = [] } = useQuery<NavigationPoint[]>({
     queryKey: ["/api/locations", selectedLocation?.id, "navigation"],
     enabled: !!selectedLocation,
   });
@@ -37,7 +36,7 @@ export default function Home() {
       ...point,
       nextLocation,
     };
-  }).filter(point => point.nextLocation);
+  }).filter((point): point is typeof point & { nextLocation: Location } => point.nextLocation != null);
 
   if (!locations.length) {
     return <div>Loading...</div>;

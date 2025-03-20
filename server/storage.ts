@@ -140,9 +140,15 @@ export class MemStorage implements IStorage {
     return newLocation;
   }
 
-  async createNavigationPoint(point: InsertNavigationPoint): Promise<NavigationPoint> {
+  async createNavigationPoint(data: InsertNavigationPoint): Promise<NavigationPoint> {
     const id = this.currentNavigationPointId++;
-    const newPoint = { ...point, id };
+    const newPoint: NavigationPoint = {
+      id,
+      locationId: data.locationId,
+      nextLocationId: data.nextLocationId,
+      direction: data.direction,
+      distance: data.distance,
+    };
     this.navigationPoints.set(id, newPoint);
     return newPoint;
   }
