@@ -9,9 +9,6 @@ import type { Location } from "@shared/schema";
 
 export default function Home() {
   const [rotation, setRotation] = useState(0);
-  const [currentPanorama, setCurrentPanorama] = useState(
-    "https://images.unsplash.com/photo-1533002832-1721d16b4bb9"
-  );
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const queryClient = useQueryClient();
 
@@ -23,8 +20,8 @@ export default function Home() {
   const handleRotateRight = () => setRotation((r) => r + 45);
   const handleReset = () => setRotation(0);
 
-  const handleNext = () => {
-    setCurrentPanorama(getNextPanorama(currentPanorama));
+  const handleLocationSelect = (location: Location) => {
+    setSelectedLocation(location);
     setRotation(0);
   };
 
@@ -35,7 +32,7 @@ export default function Home() {
   return (
     <div className="relative min-h-screen bg-background">
       <PanoramaViewer
-        imageUrl={currentPanorama}
+        imageUrl={selectedLocation?.panoramaUrl || locations?.[0]?.panoramaUrl}
         rotation={rotation}
       />
 
@@ -45,7 +42,7 @@ export default function Home() {
           name={location.name}
           type={location.type}
           rotation={rotation}
-          onClick={() => setSelectedLocation(location)}
+          onClick={() => handleLocationSelect(location)}
         />
       ))}
 
@@ -53,7 +50,11 @@ export default function Home() {
         onRotateLeft={handleRotateLeft}
         onRotateRight={handleRotateRight}
         onReset={handleReset}
-        onNext={handleNext}
+        onNext={() => {
+          const currentIndex = locations.findIndex(loc => loc.id === selectedLocation?.id);
+          const nextLocation = locations[(currentIndex + 1) % locations.length];
+          handleLocationSelect(nextLocation);
+        }}
       />
 
       <BuildingInfo
