@@ -5,15 +5,21 @@ import { NavigationControls } from "@/components/navigation-controls";
 import { LocationMarker } from "@/components/location-marker";
 import { BuildingInfo } from "@/components/building-info";
 import { LocationMenu } from "@/components/location-menu";
-import type { Location } from "@shared/schema";
+import { DirectionArrow } from "@/components/direction-arrow";
+import type { Location, NavigationPoint } from "@shared/schema";
 
 export default function Home() {
   const [rotation, setRotation] = useState(0);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const queryClient = useQueryClient();
 
-  const { data: locations, isLoading } = useQuery({
+  const { data: locations = [] } = useQuery({
     queryKey: ["/api/locations"],
+  });
+
+  const { data: navigationPoints = [] } = useQuery({
+    queryKey: ["/api/locations", selectedLocation?.id, "navigation"],
+    enabled: !!selectedLocation,
   });
 
   const handleRotateLeft = () => setRotation((r) => r - 45);
@@ -25,29 +31,37 @@ export default function Home() {
     setRotation(0);
   };
 
-  if (isLoading) {
+  const nextLocations = navigationPoints.map(point => {
+    const nextLocation = locations.find(loc => loc.id === point.nextLocationId);
+    return {
+      ...point,
+      nextLocation,
+    };
+  }).filter(point => point.nextLocation);
+
+  if (!locations.length) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="relative min-h-screen bg-background">
       <LocationMenu 
-        locations={locations || []} 
+        locations={locations} 
         onSelectLocation={handleLocationSelect}
       />
 
       <PanoramaViewer
-        imageUrl={selectedLocation?.panoramaUrl || locations?.[0]?.panoramaUrl}
+        imageUrl={selectedLocation?.panoramaUrl || locations[0].panoramaUrl}
         rotation={rotation}
       />
 
-      {locations?.map((location: Location) => (
-        <LocationMarker
-          key={location.id}
-          name={location.name}
-          type={location.type}
-          rotation={rotation}
-          onClick={() => handleLocationSelect(location)}
+      {nextLocations.map((point) => (
+        <DirectionArrow
+          key={point.id}
+          direction={point.direction - rotation}
+          distance={point.distance}
+          locationName={point.nextLocation.name}
+          onClick={() => handleLocationSelect(point.nextLocation)}
         />
       ))}
 
