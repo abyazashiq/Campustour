@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PanoramaViewer } from "@/components/panorama-viewer";
 import { NavigationControls } from "@/components/navigation-controls";
 import { LocationMarker } from "@/components/location-marker";
@@ -13,6 +13,7 @@ export default function Home() {
     "https://images.unsplash.com/photo-1533002832-1721d16b4bb9"
   );
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
+  const queryClient = useQueryClient();
 
   const { data: locations, isLoading } = useQuery({
     queryKey: ["/api/locations"],
@@ -21,7 +22,7 @@ export default function Home() {
   const handleRotateLeft = () => setRotation((r) => r - 45);
   const handleRotateRight = () => setRotation((r) => r + 45);
   const handleReset = () => setRotation(0);
-  
+
   const handleNext = () => {
     setCurrentPanorama(getNextPanorama(currentPanorama));
     setRotation(0);
@@ -37,7 +38,7 @@ export default function Home() {
         imageUrl={currentPanorama}
         rotation={rotation}
       />
-      
+
       {locations?.map((location: Location) => (
         <LocationMarker
           key={location.id}
@@ -59,6 +60,9 @@ export default function Home() {
         location={selectedLocation}
         open={!!selectedLocation}
         onClose={() => setSelectedLocation(null)}
+        onPanoramaUpdate={() => {
+          queryClient.invalidateQueries({ queryKey: ['/api/locations'] });
+        }}
       />
     </div>
   );

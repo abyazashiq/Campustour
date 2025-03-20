@@ -11,6 +11,7 @@ export interface IStorage {
   getNavigationPoints(locationId: number): Promise<NavigationPoint[]>;
   createLocation(location: InsertLocation): Promise<Location>;
   createNavigationPoint(point: InsertNavigationPoint): Promise<NavigationPoint>;
+  updateLocationImage(id: number, imageUrl: string): Promise<Location>;
 }
 
 export class MemStorage implements IStorage {
@@ -32,15 +33,8 @@ export class MemStorage implements IStorage {
       {
         name: "Main Building",
         description: "The central administrative building",
-        panoramaUrl: "https://images.unsplash.com/photo-1533002832-1721d16b4bb9",
+        panoramaUrl: "/panoramas/placeholder.jpg", // Default placeholder
         position: { lat: 40.7128, lng: -74.0060 },
-        type: "building"
-      },
-      {
-        name: "Science Complex",
-        description: "Home to the science departments",
-        panoramaUrl: "https://images.unsplash.com/photo-1624972137347-f7eef28f10e9",
-        position: { lat: 40.7129, lng: -74.0061 },
         type: "building"
       }
     ];
@@ -74,6 +68,16 @@ export class MemStorage implements IStorage {
     const newPoint = { ...point, id };
     this.navigationPoints.set(id, newPoint);
     return newPoint;
+  }
+
+  async updateLocationImage(id: number, imageUrl: string): Promise<Location> {
+    const location = await this.getLocation(id);
+    if (!location) {
+      throw new Error("Location not found");
+    }
+    const updatedLocation = { ...location, panoramaUrl: imageUrl };
+    this.locations.set(id, updatedLocation);
+    return updatedLocation;
   }
 }
 
