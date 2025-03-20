@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PanoramaViewer } from "@/components/panorama-viewer";
 import { NavigationControls } from "@/components/navigation-controls";
 import { LocationMarker } from "@/components/location-marker";
 import { BuildingInfo } from "@/components/building-info";
-import { getNextPanorama, fetchLocations } from "@/lib/locations";
+import { LocationMenu } from "@/components/location-menu";
 import type { Location } from "@shared/schema";
 
 export default function Home() {
@@ -31,6 +31,11 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen bg-background">
+      <LocationMenu 
+        locations={locations || []} 
+        onSelectLocation={handleLocationSelect}
+      />
+
       <PanoramaViewer
         imageUrl={selectedLocation?.panoramaUrl || locations?.[0]?.panoramaUrl}
         rotation={rotation}

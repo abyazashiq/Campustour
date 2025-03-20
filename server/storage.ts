@@ -31,11 +31,88 @@ export class MemStorage implements IStorage {
   private initializeData() {
     const sampleLocations: InsertLocation[] = [
       {
-        name: "Main Building",
-        description: "The central administrative building",
-        panoramaUrl: "/panoramas/placeholder.jpg", // Default placeholder
+        name: "IT Department",
+        description: "Information Technology Department Building",
+        panoramaUrl: "/panoramas/placeholder.jpg",
         position: { lat: 40.7128, lng: -74.0060 },
         type: "building"
+      },
+      {
+        name: "CSE Department",
+        description: "Computer Science and Engineering Department",
+        panoramaUrl: "/panoramas/placeholder.jpg",
+        position: { lat: 40.7129, lng: -74.0061 },
+        type: "building"
+      },
+      {
+        name: "Library",
+        description: "Central Library",
+        panoramaUrl: "/panoramas/placeholder.jpg",
+        position: { lat: 40.7130, lng: -74.0062 },
+        type: "building"
+      },
+      {
+        name: "ECE Department",
+        description: "Electronics and Communication Engineering Department",
+        panoramaUrl: "/panoramas/placeholder.jpg",
+        position: { lat: 40.7131, lng: -74.0063 },
+        type: "building"
+      },
+      {
+        name: "Rishab's Food Court",
+        description: "Popular campus food court",
+        panoramaUrl: "/panoramas/placeholder.jpg",
+        position: { lat: 40.7132, lng: -74.0064 },
+        type: "food_court"
+      },
+      {
+        name: "Fountain",
+        description: "Central Campus Fountain",
+        panoramaUrl: "/panoramas/placeholder.jpg",
+        position: { lat: 40.7133, lng: -74.0065 },
+        type: "landmark"
+      },
+      {
+        name: "Clock Tower",
+        description: "Iconic Campus Clock Tower",
+        panoramaUrl: "/panoramas/placeholder.jpg",
+        position: { lat: 40.7134, lng: -74.0066 },
+        type: "landmark"
+      },
+      {
+        name: "Main Auditorium",
+        description: "Campus Main Auditorium",
+        panoramaUrl: "/panoramas/placeholder.jpg",
+        position: { lat: 40.7135, lng: -74.0067 },
+        type: "building"
+      },
+      {
+        name: "Entrance",
+        description: "Main Campus Entrance",
+        panoramaUrl: "/panoramas/placeholder.jpg",
+        position: { lat: 40.7136, lng: -74.0068 },
+        type: "landmark"
+      },
+      {
+        name: "Main Canteen",
+        description: "Main Campus Canteen",
+        panoramaUrl: "/panoramas/placeholder.jpg",
+        position: { lat: 40.7137, lng: -74.0069 },
+        type: "food_court"
+      },
+      {
+        name: "Ashwin's",
+        description: "Ashwin's Food Court",
+        panoramaUrl: "/panoramas/placeholder.jpg",
+        position: { lat: 40.7138, lng: -74.0070 },
+        type: "food_court"
+      },
+      {
+        name: "Snow Cube",
+        description: "Snow Cube Refreshments",
+        panoramaUrl: "/panoramas/placeholder.jpg",
+        position: { lat: 40.7139, lng: -74.0071 },
+        type: "food_court"
       }
     ];
 
