@@ -57,7 +57,7 @@ export function LocationMenu({ locations, onSelectLocation }: LocationMenuProps)
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline" size="icon" className="fixed top-4 left-4">
+        <Button variant="outline" size="icon" className="fixed top-4 left-4 z-50">
           <Menu className="h-4 w-4" />
         </Button>
       </SheetTrigger>
