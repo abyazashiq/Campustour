@@ -6,15 +6,17 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
-  plugins: [react()], // Removed Replit-specific plugins
+  plugins: [react()],
+  root: __dirname, // Ensure Vite runs from the correct directory
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src"), // Ensure this matches your project structure
+      "@": path.resolve(__dirname, "src"),
       "@shared": path.resolve(__dirname, "shared"),
     },
   },
   build: {
-    outDir: "dist", // Vercel serves from `dist/`
+    outDir: "dist",
     emptyOutDir: true,
   },
+  publicDir: "public", // Ensure public assets are included
 });
